@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class CategoryResource {
     }
 
     @PostMapping
-    public ResponseEntity<Category> save(@RequestBody Category category, HttpServletResponse response){
+    public ResponseEntity<Category> save(@Valid @RequestBody Category category, HttpServletResponse response){
         Category categorySaved = categoryRepository.save(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(categorySaved.getId()).toUri();
