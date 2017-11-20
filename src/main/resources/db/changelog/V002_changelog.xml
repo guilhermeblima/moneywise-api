@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+   <changeSet id="002.001" author="guilhermeblima">
+       <createTable tableName="tb_person">
+           <column name="id" type="bigint" autoIncrement="true">
+               <constraints primaryKey="true"/>
+           </column>
+           <column name="name" type="varchar(255)"/>
+           <column name="number" type="varchar(10)"/>
+           <column name="street" type="varchar(30)"/>
+           <column name="suburb" type="varchar(20)"/>
+           <column name="city" type="varchar(20)"/>
+           <column name="zip_code" type="varchar(10)"/>
+           <column name="active" type="boolean"/>
+       </createTable>
+   </changeSet>
+
+    <changeSet id="002.002" author="guilhermeblima">
+        <insert tableName="tb_person">
+            <column name="name">Bilbo Baggins</column>
+            <column name="number">15</column>
+            <column name="street">Green Dragon Ave</column>
+            <column name="suburb">Hobbiton</column>
+            <column name="city">The Shire</column>
+            <column name="zip_code">8080</column>
+            <column name="active" valueBoolean="true" />
+        </insert>
+
+        <insert tableName="tb_person">
+            <column name="name">Gandalf Grey</column>
+            <column name="number">1</column>
+            <column name="street">Greys ave</column>
+            <column name="suburb">Belfalas</column>
+            <column name="city">Gondor</column>
+            <column name="zip_code">8080</column>
+            <column name="active" valueBoolean="true" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
