@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -25,5 +26,6 @@ public class Person {
     private Boolean active = Boolean.TRUE;
 
     @Embedded
+    @Valid
     private Address address;
 }
