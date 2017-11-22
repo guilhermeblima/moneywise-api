@@ -1,8 +1,11 @@
 package com.glima.moneywise.resource;
 
+import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Category;
 import com.glima.moneywise.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,9 @@ public class CategoryResource {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @GetMapping
     public List<Category> listAll(){
         return categoryRepository.findAll();
@@ -32,10 +38,8 @@ public class CategoryResource {
     @PostMapping
     public ResponseEntity<Category> save(@Valid @RequestBody Category category, HttpServletResponse response){
         Category categorySaved = categoryRepository.save(category);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-                .buildAndExpand(categorySaved.getId()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
-        return ResponseEntity.created(uri).body(categorySaved);
+        publisher.publishEvent(new CreatedResourceEvent(this, response, categorySaved.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categorySaved);
     }
 
     @GetMapping("/{id}")

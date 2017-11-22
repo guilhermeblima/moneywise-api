@@ -1,8 +1,11 @@
 package com.glima.moneywise.resource;
 
+import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Person;
 import com.glima.moneywise.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,6 +25,9 @@ public class PersonResource {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @GetMapping
     public List<Person> listAll(){
         return personRepository.findAll();
@@ -36,9 +42,7 @@ public class PersonResource {
     @PostMapping
     public ResponseEntity<Person> save(@Valid @RequestBody Person person, HttpServletResponse response){
         person = personRepository.save(person);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-                .buildAndExpand(person.getId()).toUri();
-        response.addHeader("Location", uri.toASCIIString());
-        return ResponseEntity.created(uri).body(person);
+        publisher.publishEvent(new CreatedResourceEvent(this, response, person.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 }
