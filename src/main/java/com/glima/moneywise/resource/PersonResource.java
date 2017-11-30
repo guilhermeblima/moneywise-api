@@ -3,6 +3,7 @@ package com.glima.moneywise.resource;
 import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Person;
 import com.glima.moneywise.repository.PersonRepository;
+import com.glima.moneywise.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public class PersonResource {
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    @Autowired
+    private PersonService personService;
+
     @GetMapping
     public List<Person> listAll(){
         return personRepository.findAll();
@@ -50,5 +54,10 @@ public class PersonResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         personRepository.delete(id);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Person> update(@PathVariable Long id, @Valid @RequestBody Person person){
+        return ResponseEntity.ok(personService.update(id,person));
     }
 }
