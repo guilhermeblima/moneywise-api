@@ -29,7 +29,7 @@ public class MoneywiseResourceException extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String friendlyMessage = messageSource.getMessage("invalid.parameter.request", null , LocaleContextHolder.getLocale());
-        return handleExceptionInternal(ex, Arrays.asList(new Error(friendlyMessage, ex.getCause().toString())), headers, HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, Arrays.asList(new Error(friendlyMessage, ex.getCause() != null ? ex.getCause().toString() : ex.toString())), headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override

@@ -17,11 +17,22 @@ public class PersonService {
     private PersonRepository personRepository;
 
     public Person update(Long id, Person person){
-        Person updatedPerson = personRepository.findOne(id);
-        if(updatedPerson == null){
-            throw new EmptyResultDataAccessException(1);
-        }
+        Person updatedPerson = findPersonById(id);
         BeanUtils.copyProperties(person, updatedPerson, "id");
         return personRepository.save(updatedPerson);
+    }
+
+    public void updateStatusPropertie(Long id, Boolean status) {
+        Person person = findPersonById(id);
+        person.setActive(status);
+        personRepository.save(person);
+    }
+
+    public Person findPersonById(Long id){
+        Person person = personRepository.findOne(id);
+        if(person == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+        return person;
     }
 }

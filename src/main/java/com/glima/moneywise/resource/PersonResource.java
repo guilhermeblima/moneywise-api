@@ -4,6 +4,7 @@ import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Person;
 import com.glima.moneywise.repository.PersonRepository;
 import com.glima.moneywise.service.PersonService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -50,14 +51,20 @@ public class PersonResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
         personRepository.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Person> update(@PathVariable Long id, @Valid @RequestBody Person person){
         return ResponseEntity.ok(personService.update(id,person));
+    }
+
+    @PutMapping("/{id}/status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatusPropertie(@PathVariable Long id, @RequestBody Boolean status){
+        personService.updateStatusPropertie(id, status);
     }
 }
