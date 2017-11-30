@@ -64,7 +64,7 @@ public class PersonResource {
 
     @PutMapping("/{id}/status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStatusPropertie(@PathVariable Long id, @RequestBody Boolean status){
-        personService.updateStatusPropertie(id, status);
+    public void updateStatusProperty(@PathVariable Long id, @RequestBody Boolean status){
+        personService.updateStatusProperty(id, status);
     }
 }

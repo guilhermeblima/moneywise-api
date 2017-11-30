@@ -22,7 +22,7 @@ public class PersonService {
         return personRepository.save(updatedPerson);
     }
 
-    public void updateStatusPropertie(Long id, Boolean status) {
+    public void updateStatusProperty(Long id, Boolean status) {
         Person person = findPersonById(id);
         person.setActive(status);
         personRepository.save(person);
