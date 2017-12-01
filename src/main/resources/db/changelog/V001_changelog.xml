@@ -42,6 +42,11 @@
 
     <changeSet id="001.006" author="guilhermeblima">
         <insert tableName="tb_category">
+            <column name="value">Salary</column>
+        </insert>
+    </changeSet>
+    <changeSet id="001.007" author="guilhermeblima">
+        <insert tableName="tb_category">
             <column name="value">Other</column>
         </insert>
     </changeSet>

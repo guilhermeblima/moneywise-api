@@ -1,0 +1,57 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+   <changeSet id="003.001" author="guilhermeblima">
+       <createTable tableName="tb_transaction">
+           <column name="id" type="bigint" autoIncrement="true">
+               <constraints primaryKey="true"/>
+           </column>
+           <column name="title" type="varchar(50)"/>
+           <column name="dt_transaction" type="timestamp"/>
+           <column name="dt_payment_due" type="timestamp"/>
+           <column name="total" type="numeric(10,2)"/>
+           <column name="description" type="varchar(255)"/>
+           <column name="type" type="varchar(20)"/>
+           <column name="id_category" type="bigint">
+               <constraints foreignKeyName="fk_category"
+                            referencedTableName="tb_category"
+                            referencedColumnNames="id"/>
+           </column>
+           <column name="id_person" type="bigint">
+               <constraints foreignKeyName="fk_person"
+                            referencedTableName="tb_person"
+                            referencedColumnNames="id"/>
+           </column>
+       </createTable>
+   </changeSet>
+
+    <changeSet id="003.002" author="guilhermeblima">
+        <insert tableName="tb_transaction">
+            <column name="title">Salary Payment</column>
+            <column name="dt_transaction" value="now()"/>
+            <column name="total">8000</column>
+            <column name="description">salary payment for the month</column>
+            <column name="type">DEPOSIT</column>
+            <column name="id_category">5</column>
+            <column name="id_person">1</column>
+        </insert>
+
+        <insert tableName="tb_transaction">
+            <column name="title">Petrol</column>
+            <column name="dt_transaction" value="now()"/>
+            <column name="dt_payment_due" value="now()"/>
+            <column name="total">30</column>
+            <column name="description">$30 spent on fuel</column>
+            <column name="type">WITHDRAWAL</column>
+            <column name="id_category">6</column>
+            <column name="id_person">1</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
