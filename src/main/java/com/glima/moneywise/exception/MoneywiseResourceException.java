@@ -1,8 +1,10 @@
 package com.glima.moneywise.exception;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,12 @@ public class MoneywiseResourceException extends ResponseEntityExceptionHandler{
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,WebRequest request){
         String friendlyMessage = messageSource.getMessage("resource.not.found", null , LocaleContextHolder.getLocale());
         return handleExceptionInternal(ex,Arrays.asList(new Error(friendlyMessage, ex.toString())), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request){
+        String friendlyMessage = messageSource.getMessage("transaction.not.completed", null , LocaleContextHolder.getLocale());
+        return handleExceptionInternal(ex,Arrays.asList(new Error(friendlyMessage, ExceptionUtils.getRootCauseMessage(ex))), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     private List<Error> createErrorList(BindingResult bindingResult) {
