@@ -54,7 +54,7 @@ public class MoneywiseResourceException extends ResponseEntityExceptionHandler{
     @ExceptionHandler({PersonNotFoundOrInactiveException.class})
     public ResponseEntity<Object> handlePersonNotFoundOrInactiveException(PersonNotFoundOrInactiveException ex){
         String friendlyMessage = messageSource.getMessage("person.not.found.or.inactive", null , LocaleContextHolder.getLocale());
-        return ResponseEntity.badRequest().body(Arrays.asList(new Error(friendlyMessage, ExceptionUtils.getRootCauseMessage(ex))));
+        return ResponseEntity.badRequest().body(Arrays.asList(new Error(friendlyMessage,ex.toString())));
     }
 
     private List<Error> createErrorList(BindingResult bindingResult) {

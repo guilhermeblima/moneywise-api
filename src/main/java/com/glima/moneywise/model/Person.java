@@ -1,5 +1,6 @@
 package com.glima.moneywise.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,4 +29,10 @@ public class Person {
     @Embedded
     @Valid
     private Address address;
+
+    @JsonIgnore
+    @Transient
+    public Boolean isInactive(){
+        return !this.active;
+    }
 }

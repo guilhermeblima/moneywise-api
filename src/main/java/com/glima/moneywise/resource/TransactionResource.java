@@ -3,6 +3,7 @@ package com.glima.moneywise.resource;
 import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.TransactionRepository;
+import com.glima.moneywise.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class TransactionResource {
     private TransactionRepository transactionRepository;
 
     @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
     private ApplicationEventPublisher publisher;
 
     @GetMapping
@@ -40,7 +44,7 @@ public class TransactionResource {
 
     @PostMapping
     public ResponseEntity<Transaction> save(@Valid @RequestBody Transaction transaction, HttpServletResponse response){
-        transaction = transactionRepository.save(transaction);
+        transaction = transactionService.save(transaction);
         publisher.publishEvent(new CreatedResourceEvent(this,response,transaction.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
     }
