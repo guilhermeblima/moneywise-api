@@ -43,6 +43,7 @@ public class TransactionResource {
         return transaction != null ? ResponseEntity.ok(transaction) : ResponseEntity.notFound().build();
     }
 
+    //TODO fix date columns to save timestamp
     @PostMapping
     public ResponseEntity<Transaction> save(@Valid @RequestBody Transaction transaction, HttpServletResponse response){
         transaction = transactionService.save(transaction);
