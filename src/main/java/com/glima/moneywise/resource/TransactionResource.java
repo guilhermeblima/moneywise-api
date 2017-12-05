@@ -3,6 +3,7 @@ package com.glima.moneywise.resource;
 import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.TransactionRepository;
+import com.glima.moneywise.repository.filter.TransactionFilter;
 import com.glima.moneywise.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,8 +33,8 @@ public class TransactionResource {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Transaction> listAll(){
-        return transactionRepository.findAll();
+    public List<Transaction> listAll(TransactionFilter transactionFilter){
+        return transactionRepository.findByFilter(transactionFilter);
     }
 
     @GetMapping("/{id}")
