@@ -50,4 +50,9 @@ public class TransactionResource {
         publisher.publishEvent(new CreatedResourceEvent(this,response,transaction.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
     }
+
+    @DeleteMapping("/{id}")
+    public void remove(@PathVariable Long id){
+        transactionRepository.delete(id);
+    }
 }
