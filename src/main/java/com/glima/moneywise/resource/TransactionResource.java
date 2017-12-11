@@ -7,6 +7,8 @@ import com.glima.moneywise.repository.filter.TransactionFilter;
 import com.glima.moneywise.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +35,8 @@ public class TransactionResource {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Transaction> listAll(TransactionFilter transactionFilter){
-        return transactionRepository.findByFilter(transactionFilter);
+    public Page<Transaction> listAll(TransactionFilter transactionFilter, Pageable pageable){
+        return transactionRepository.findByFilter(transactionFilter, pageable);
     }
 
     @GetMapping("/{id}")

@@ -2,6 +2,9 @@ package com.glima.moneywise.repository.transaction;
 
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.filter.TransactionFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -23,7 +26,7 @@ public class TransactionRepositoryImpl implements TransactionRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public List<Transaction> findByFilter(TransactionFilter transactionFilter) {
+    public Page<Transaction> findByFilter(TransactionFilter transactionFilter, Pageable pageable) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Transaction> criteria = builder.createQuery(Transaction.class);
         Root<Transaction> root = criteria.from(Transaction.class);
@@ -32,7 +35,32 @@ public class TransactionRepositoryImpl implements TransactionRepositoryQuery {
         criteria.where(predicates);
         
         TypedQuery<Transaction> query = manager.createQuery(criteria);
-        return query.getResultList();
+        addPageableFilters(query, pageable);
+        return new PageImpl<>(query.getResultList(),pageable, countElements(transactionFilter));
+    }
+
+
+
+    private void addPageableFilters(TypedQuery<Transaction> query, Pageable pageable) {
+        int currentPage = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+        int firstPageElement = currentPage * pageSize;
+
+        query.setFirstResult(firstPageElement);
+        query.setMaxResults(pageSize);
+    }
+
+    private Long countElements(TransactionFilter transactionFilter) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+        Root<Transaction> root = criteria.from(Transaction.class);
+
+        Predicate[] predicates = filterRestrictions(transactionFilter, builder, root);
+        criteria.where(predicates);
+
+        criteria.select(builder.count(root));
+        return manager.createQuery(criteria).getSingleResult();
+
     }
 
     private Predicate[] filterRestrictions(TransactionFilter transactionFilter, CriteriaBuilder builder, Root<Transaction> root) {

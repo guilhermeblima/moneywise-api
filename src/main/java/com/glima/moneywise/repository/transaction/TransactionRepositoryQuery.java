@@ -2,6 +2,8 @@ package com.glima.moneywise.repository.transaction;
 
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.filter.TransactionFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,5 +12,5 @@ import java.util.List;
  */
 public interface TransactionRepositoryQuery {
 
-    List<Transaction> findByFilter(TransactionFilter transactionFilter);
+    Page<Transaction> findByFilter(TransactionFilter transactionFilter, Pageable pageable);
 }
