@@ -1,0 +1,147 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+   <changeSet id="004.001" author="guilhermeblima">
+       <createTable tableName="tb_user">
+           <column name="id" type="bigint">
+               <constraints primaryKey="true"/>
+           </column>
+           <column name="name" type="varchar(50)"/>
+           <column name="username" type="varchar(50)"/>
+           <column name="password" type="varchar(250)"/>
+       </createTable>
+   </changeSet>
+
+    <changeSet id="004.002" author="guilhermeblima">
+        <createTable tableName="tb_role">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004.003" author="guilhermeblima">
+        <createTable tableName="tb_user_role">
+            <column name="id_user" type="bigint">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_user"
+                             referencedTableName="tb_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="id_role" type="bigint">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_role"
+                             referencedTableName="tb_role"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004.004" author="guilhermeblima">
+
+        <insert tableName="tb_user">
+            <column name="id">1</column>
+            <column name="name">Sauron</column>
+            <column name="username">admin@moneywise.com</column>
+            <column name="password">$2a$10$skIixOdzRAc1UUkvcFnFouHMVMwxDAcAXUE2YYrBtPCD881rHF/mi</column>
+        </insert>
+
+        <insert tableName="tb_user">
+            <column name="id">2</column>
+            <column name="name">Frodo</column>
+            <column name="username">frodo@moneywise.com</column>
+            <column name="password">$2a$10$1jplUZ2L5BfhzQWfZzCjqeKO3rKqm/CQpBo7SbE/biTnB303TrEK6</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="004.005" author="guilhermeblima">
+
+        <insert tableName="tb_role">
+            <column name="id">1</column>
+            <column name="name">ROLE_SAVE_CATEGORY</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">2</column>
+            <column name="name">ROLE_SEARCH_CATEGORY</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">3</column>
+            <column name="name">ROLE_SAVE_PERSON</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">4</column>
+            <column name="name">ROLE_SEARCH_PERSON</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">5</column>
+            <column name="name">ROLE_DELETE_PERSON</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">6</column>
+            <column name="name">ROLE_SAVE_TRANSACTION</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">7</column>
+            <column name="name">ROLE_SEARCH_TRANSACTION</column>
+        </insert>
+        <insert tableName="tb_role">
+            <column name="id">8</column>
+            <column name="name">ROLE_DELETE_TRANSACTION</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="004.006" author="guilhermeblima">
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">1</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">2</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">3</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">4</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">5</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">6</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">7</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">1</column>
+            <column name="id_role">8</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">2</column>
+            <column name="id_role">2</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">2</column>
+            <column name="id_role">4</column>
+        </insert>
+        <insert tableName="tb_user_role">
+            <column name="id_user">2</column>
+            <column name="id_role">7</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
