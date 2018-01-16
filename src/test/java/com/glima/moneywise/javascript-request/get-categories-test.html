@@ -1,0 +1,27 @@
+<!--
+ Page used in order to test CORS in javascript requests.
+ In order to use it, I normally run a python SimpleHTTPServer. 
+ Run the following command in your console:
+ python -m http.server 8000
+-->
+
+<html>
+<body>
+<button onclick="search()">GET CATEGORIES</button>
+
+<script>
+function printResponse(){
+ console.log(this.responseText);
+}
+
+function search(){
+	var req = new XMLHttpRequest();
+	req.addEventListener("load", printResponse);
+	req.open("GET", "http://localhost:8080/categories");
+	req.setRequestHeader('HEADER1', 'Value');
+	
+	req.send();
+}
+</script>
+</body>
+</html>
