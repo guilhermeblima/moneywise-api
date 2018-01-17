@@ -4,6 +4,7 @@ import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.TransactionRepository;
 import com.glima.moneywise.repository.filter.TransactionFilter;
+import com.glima.moneywise.repository.projection.TransactionSummary;
 import com.glima.moneywise.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -39,6 +40,13 @@ public class TransactionResource {
     @PreAuthorize("hasAuthority('ROLE_SEARCH_TRANSACTION') and #oauth2.hasScope('read')")
     public Page<Transaction> listAll(TransactionFilter transactionFilter, Pageable pageable){
         return transactionRepository.findByFilter(transactionFilter, pageable);
+    }
+
+    @GetMapping(params = "summary") //search for the param 'summary' in order to apply the projection
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_TRANSACTION') and #oauth2.hasScope('read')")
+    public Page<TransactionSummary> listAllSummary(TransactionFilter transactionFilter, Pageable pageable){
+        return transactionRepository.findTransactionSummary(transactionFilter, pageable);
     }
 
     @GetMapping("/{id}")

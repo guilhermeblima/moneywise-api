@@ -2,6 +2,7 @@ package com.glima.moneywise.repository.transaction;
 
 import com.glima.moneywise.model.Transaction;
 import com.glima.moneywise.repository.filter.TransactionFilter;
+import com.glima.moneywise.repository.projection.TransactionSummary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class TransactionRepositoryImpl implements TransactionRepositoryQuery {
 
 
 
-    private void addPageableFilters(TypedQuery<Transaction> query, Pageable pageable) {
+    private void addPageableFilters(TypedQuery<?> query, Pageable pageable) {
         int currentPage = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
         int firstPageElement = currentPage * pageSize;
@@ -83,5 +84,24 @@ public class TransactionRepositoryImpl implements TransactionRepositoryQuery {
             );
         }
         return predicates.toArray(new Predicate[predicates.size()]);
+    }
+
+    @Override
+    public Page<TransactionSummary> findTransactionSummary(TransactionFilter transactionFilter, Pageable pageable) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<TransactionSummary> criteria = builder.createQuery(TransactionSummary.class);
+        Root<Transaction> root = criteria.from(Transaction.class);
+
+        criteria.select(builder.construct(TransactionSummary.class,
+                root.get("id"), root.get("title"), root.get("date"), root.get("paymentDue"),
+                root.get("total"), root.get("type"), root.get("category").get("value"),
+                root.get("person").get("name")));
+
+        Predicate[] predicates = filterRestrictions(transactionFilter, builder, root);
+        criteria.where(predicates);
+
+        TypedQuery<TransactionSummary> query = manager.createQuery(criteria);
+        addPageableFilters(query, pageable);
+        return new PageImpl<>(query.getResultList(),pageable, countElements(transactionFilter));
     }
 }
