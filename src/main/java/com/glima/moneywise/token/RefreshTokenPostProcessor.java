@@ -1,5 +1,7 @@
 package com.glima.moneywise.token;
 
+import com.glima.moneywise.config.property.MoneywiseApiProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ControllerAdvice
 public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken>{
+
+    @Autowired
+    private MoneywiseApiProperty moneywiseApiProperty;
 
     /***
      * Method verifies if method executed is psotAccessToken and
@@ -60,7 +65,7 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
     private void addRefreshTokenCookie(String refreshToken, HttpServletRequest request, HttpServletResponse response) {
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false); // TODO: change to TRUE in production
+        refreshTokenCookie.setSecure(moneywiseApiProperty.getSecurity().isEnableHttps());
         refreshTokenCookie.setPath(request.getContextPath() + "/oauth/token");
         refreshTokenCookie.setMaxAge(2592000); // 30 days
         response.addCookie(refreshTokenCookie);
