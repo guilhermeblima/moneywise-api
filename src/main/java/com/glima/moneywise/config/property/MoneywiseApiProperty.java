@@ -17,6 +17,15 @@ public class MoneywiseApiProperty {
     public static class Security{
 
         private boolean enableHttps;
+        private String originAllowed;
+
+        public String getOriginAllowed() {
+            return originAllowed;
+        }
+
+        public void setOriginAllowed(String originAllowed) {
+            this.originAllowed = originAllowed;
+        }
 
         public boolean isEnableHttps() {
             return enableHttps;

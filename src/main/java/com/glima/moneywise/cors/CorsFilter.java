@@ -1,6 +1,8 @@
 package com.glima.moneywise.cors;
 
+import com.glima.moneywise.config.property.MoneywiseApiProperty;
 import com.sun.xml.internal.bind.v2.TODO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -23,17 +25,19 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE) // high priority
 public class CorsFilter implements Filter {
 
-    private String originAllowed = "http://localhost:8000"; // TODO: Config globally for production
+    @Autowired
+    private MoneywiseApiProperty moneywiseApiProperty;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        response.setHeader("Access-Control-Allow-Origin", originAllowed);
+        response.setHeader("Access-Control-Allow-Origin", moneywiseApiProperty.getSecurity().getOriginAllowed());
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        if("OPTIONS".equals(request.getMethod()) && originAllowed.equals(request.getHeader("Origin"))){
+        if("OPTIONS".equals(request.getMethod()) &&
+                moneywiseApiProperty.getSecurity().getOriginAllowed().equals(request.getHeader("Origin"))){
             response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
             response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-type, Accept");
             response.setHeader("Access-Control-Max-Age", "3600"); //1hr cache
