@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +36,13 @@ public class TransactionResource {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_TRANSACTION') and #oauth2.hasScope('read')")
     public Page<Transaction> listAll(TransactionFilter transactionFilter, Pageable pageable){
         return transactionRepository.findByFilter(transactionFilter, pageable);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_TRANSACTION') and #oauth2.hasScope('read')")
     public ResponseEntity<Transaction> findOne(@PathVariable Long id){
         Transaction transaction = transactionRepository.findOne(id);
         return transaction != null ? ResponseEntity.ok(transaction) : ResponseEntity.notFound().build();
@@ -47,6 +50,7 @@ public class TransactionResource {
 
     //TODO fix date columns to save timestamp
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_SAVE_TRANSACTION') and #oauth2.hasScope('write')")
     public ResponseEntity<Transaction> save(@Valid @RequestBody Transaction transaction, HttpServletResponse response){
         transaction = transactionService.save(transaction);
         publisher.publishEvent(new CreatedResourceEvent(this,response,transaction.getId()));
@@ -54,6 +58,7 @@ public class TransactionResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_DELETE_TRANSACTION') and #oauth2.hasScope('write')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable Long id){
         transactionRepository.delete(id);
