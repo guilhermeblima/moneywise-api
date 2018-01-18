@@ -23,7 +23,7 @@ import java.util.Arrays;
 /**
  * Created by Guilherme on 08/01/2018.
  */
-@Profile("oauth-security")
+//@Profile("oauth-security")
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{

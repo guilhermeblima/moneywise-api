@@ -18,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Class created as a way to authenticate with the api using Basic Auth.
  * However always use OAuth for production
  */
-@Profile("basic-security")
-@EnableWebSecurity
+//@Profile("basic-security")
+//@EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
