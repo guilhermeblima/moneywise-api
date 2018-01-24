@@ -64,14 +64,14 @@ The API available resources are:
 
 #### Headers
 
-| chave         | Valor         |
+| key         | value         |
 | ------------- | ------------- |
 | Content-Type  | application/x-www-form-urlencoded  |
 | Authorization  | Basic YW5ndWxhcjpAbmd1bEByMA==  |
 
 #### Body
 
-| chave         | Valor         |
+| key         | value         |
 | ------------- | ------------- |
 | client  | angular  |
 | username  | admin@moneywise.com  |
@@ -86,14 +86,14 @@ The API available resources are:
 
 #### Headers
 
-| chave         | Valor         |
+| key         | value         |
 | ------------- | ------------- |
 | Content-Type  | application/x-www-form-urlencoded  |
 | Authorization  | Basic YW5ndWxhcjpAbmd1bEByMA==  |
 
 #### Body
 
-| chave         | Valor         |
+| key         | value         |
 | ------------- | ------------- |
 | grant_type  | refresh_token  |
 | refresh_token  | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJhdGkiOiJmMGZhZTNjZi00Y2MxLTRhYzItYTQzMS1jYTdjYzY0YzA5YWMiLCJleHAiOjE1MDgyNDQyNjQsImF1dGhvcml0aWVzIjpbIlJPTEVfUk9MRSJdLCJqdGkiOiJjMzcyNDY1Yy1kNDFkLTRjMDAtYmE4Yi01MGQ1OGM2MzFiNWMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.3MMwWjjSVFf2wgWq7Pe_-I2kepZVVsyLF0rCBSU1yhY  |
