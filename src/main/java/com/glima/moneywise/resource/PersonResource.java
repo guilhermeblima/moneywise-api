@@ -3,10 +3,14 @@ package com.glima.moneywise.resource;
 import com.glima.moneywise.event.CreatedResourceEvent;
 import com.glima.moneywise.model.Person;
 import com.glima.moneywise.repository.PersonRepository;
+import com.glima.moneywise.repository.filter.PersonFilter;
+import com.glima.moneywise.repository.projection.PersonSummary;
 import com.glima.moneywise.service.PersonService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,11 +38,27 @@ public class PersonResource {
     @Autowired
     private PersonService personService;
 
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasAuthority('ROLE_SEARCH_PERSON') and #oauth2.hasScope('read')")
     public List<Person> listAll(){
         return personRepository.findAll();
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_PERSON') and #oauth2.hasScope('read')")
+    public Page<Person> findByFilter(PersonFilter personFilter, Pageable pageable){
+        return personRepository.findByFilter(personFilter, pageable);
+    }
+
+
+    @GetMapping(params = "summary")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_PERSON') and #oauth2.hasScope('read')")
+    public Page<PersonSummary> findSummary(PersonFilter personFilter, Pageable pageable){
+        return personRepository.findByFilterSummary(personFilter, pageable);
+    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_SEARCH_PERSON') and #oauth2.hasScope('read')")
